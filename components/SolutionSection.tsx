@@ -140,7 +140,7 @@ export default function SolutionSection() {
             >
               <motion.div className="absolute inset-0" style={{ y: imageY, scale: 1.1 }}>
                 <Image
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=900&q=80"
+                  src="https://images.unsplash.com/photo-1521737711867-e3b97375f902?auto=format&fit=crop&w=900&q=80"
                   alt="Team collaborating on business strategy"
                   fill
                   className="object-cover"

@@ -7,9 +7,36 @@ import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "How It Works | ES Team",
-  description:
-    "From your first discovery call to a fully onboarded VA — learn exactly how ES Team matches and supports you every step of the way.",
+  title: "How It Works | 4-Step Process to Build Your Virtual Team",
+  description: "From your first discovery call to a fully onboarded VA — learn exactly how ES Team matches and supports you every step of the way. Transparent process for hiring virtual assistants and digital marketing experts.",
+  keywords: [
+    "how virtual assistance works",
+    "hiring process virtual assistant",
+    "onboarding virtual team",
+    "business process outsourcing steps",
+    "remote team building process",
+    "virtual assistant matching",
+    "digital marketing team setup",
+    "business scaling process"
+  ],
+  openGraph: {
+    title: "How It Works | 4-Step Process to Build Your Virtual Team",
+    description: "From your first discovery call to a fully onboarded VA — learn exactly how ES Team matches and supports you every step of the way.",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=800&q=80",
+        width: 800,
+        height: 600,
+        alt: "Team planning and mapping out a workflow process",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "How It Works | 4-Step Process to Build Your Virtual Team",
+    description: "From your first discovery call to a fully onboarded VA — learn exactly how ES Team matches and supports you every step of the way.",
+    images: ["https://images.unsplash.com/photo-1553877522-43269d4ea984?auto=format&fit=crop&w=800&q=80"],
+  },
 };
 
 export default function HowItWorksPage() {

@@ -1,5 +1,27 @@
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
+## SEO Implementation
+
+This project includes comprehensive SEO optimization for better search engine visibility and social media sharing:
+
+### Features Implemented:
+- **Meta Tags**: Complete Open Graph, Twitter Cards, and standard meta tags
+- **Structured Data**: JSON-LD schema markup for business/organization
+- **Sitemap**: Auto-generated XML sitemap for search engines
+- **Robots.txt**: Proper crawling instructions
+- **PWA Manifest**: Web app manifest for mobile experience
+- **Viewport & Theme**: Proper mobile optimization and theming
+
+### Key SEO Files:
+- `app/layout.tsx` - Global metadata and structured data
+- `app/sitemap.ts` - Dynamic sitemap generation
+- `app/robots.ts` - Search engine crawling rules
+- `public/manifest.json` - PWA configuration
+- Individual page metadata in each `page.tsx`
+
+### Environment Variables:
+Copy `.env.example` to `.env.local` and update with your actual domain and social media links for optimal SEO.
+
 ## Getting Started
 
 First, run the development server:

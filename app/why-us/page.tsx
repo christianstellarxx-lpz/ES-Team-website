@@ -7,9 +7,37 @@ import CtaSection from "@/components/CtaSection";
 import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
-  title: "Why ES Team | ES Team",
-  description:
-    "See why entrepreneurs and growing businesses trust ES Team for personalized VA matching, flexible engagements, and results that move the needle.",
+  title: "Why Choose ES Team | Premium Virtual Assistance & Digital Marketing",
+  description: "See why entrepreneurs and growing businesses trust ES Team for personalized VA matching, flexible engagements, and results that move the needle. Premium service with proven track record.",
+  keywords: [
+    "why choose virtual assistant agency",
+    "premium virtual assistance",
+    "business outsourcing benefits",
+    "reliable virtual team",
+    "personalized VA matching",
+    "flexible business engagements",
+    "results-driven outsourcing",
+    "trusted business partner",
+    "professional virtual assistants"
+  ],
+  openGraph: {
+    title: "Why Choose ES Team | Premium Virtual Assistance & Digital Marketing",
+    description: "See why entrepreneurs and growing businesses trust ES Team for personalized VA matching, flexible engagements, and results that move the needle.",
+    images: [
+      {
+        url: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80",
+        width: 800,
+        height: 600,
+        alt: "Business partnership and trust between professionals",
+      },
+    ],
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Why Choose ES Team | Premium Virtual Assistance & Digital Marketing",
+    description: "See why entrepreneurs and growing businesses trust ES Team for personalized VA matching, flexible engagements, and results that move the needle.",
+    images: ["https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80"],
+  },
 };
 
 export default function WhyUsPage() {

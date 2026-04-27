@@ -109,7 +109,7 @@ export default function ProblemSection() {
                 className="absolute inset-0"
               >
                 <Image
-                  src="https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=1200&h=600&q=80"
+                  src="https://images.unsplash.com/photo-1556761175-b413da4baf72?auto=format&fit=crop&w=1200&h=600&q=80"
                   alt="Overwhelmed business owner managing too many tasks"
                   fill
                   className="object-cover object-center"
