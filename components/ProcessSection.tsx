@@ -184,12 +184,12 @@ export default function ProcessSection() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.7, delay: 0.2 }}
-          className="relative mt-16 h-72 md:h-80 rounded-2xl overflow-hidden shadow-xl border border-gray-100"
+          className="relative mt-16 aspect-[16/9] rounded-2xl overflow-hidden shadow-xl border border-gray-100"
         >
           <div ref={imageRef} className="absolute inset-0">
             <motion.div className="absolute inset-0" style={{ y: imageY, scale: 1.1 }}>
               <Image
-                src="https://images.unsplash.com/photo-1600880292203-757bb62b4baf?auto=format&fit=crop&w=1400&q=80"
+                src="https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=1600&h=900&q=80"
                 alt="Team collaborating in a discovery session"
                 fill
                 className="object-cover"

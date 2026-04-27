@@ -196,7 +196,7 @@ export default function PageHero({ label, title, subtitle, image, imageAlt }: Pa
           className="absolute inset-0 z-10 flex items-center"
           style={{ opacity: contentOpacity }}
         >
-          <div className="w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-16 pt-24 pb-16">
+          <div className="w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-16 pt-16 pb-12">
             <div className={`grid grid-cols-1 ${image ? "lg:grid-cols-2 gap-10" : ""} items-center`}>
 
               {/* Text */}
