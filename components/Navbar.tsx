@@ -44,8 +44,9 @@ export default function Navbar() {
             className="object-contain"
             priority
           />
-          <span className="font-heading font-bold text-xl text-white">
-            ES<span className="text-brand-blue">.</span>Team
+          <span className="font-heading font-bold text-xl">
+            <span className="bg-gradient-to-r from-brand-blue to-brand-aqua bg-clip-text text-transparent">ES</span>
+            <span className="text-white">Team.Work</span>
           </span>
         </Link>
 
