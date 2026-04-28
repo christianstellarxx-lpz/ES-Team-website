@@ -8,6 +8,7 @@ import {
   useSpring,
 } from "framer-motion";
 import Image from "next/image";
+import Aurora from "./Aurora";
 
 interface PageHeroProps {
   label: string;
@@ -83,11 +84,21 @@ export default function PageHero({ label, title, subtitle, image, imageAlt }: Pa
   return (
     <section
       ref={sectionRef}
-      className="relative h-[160vh]"
+      className="relative h-screen"
       onMouseMove={handleMouseMove}
     >
       {/* Sticky viewport */}
       <div className="sticky top-0 h-screen overflow-hidden bg-brand-dark">
+
+        {/* ── Layer −1 · Aurora (WebGL background) ── */}
+        <div className="absolute inset-0 pointer-events-none">
+          <Aurora
+            colorStops={["#36D4FF", "#89F6EF", "#4055A9"]}
+            blend={0.34}
+            amplitude={1.0}
+            speed={0.8}
+          />
+        </div>
 
         {/* ── Layer 0 · Gradient orbs (slowest / deepest) ── */}
         <motion.div className="absolute inset-0 pointer-events-none" style={{ y: orbsY }}>

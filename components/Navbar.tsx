@@ -26,13 +26,8 @@ export default function Navbar() {
   const isHome = pathname === "/";
 
   return (
-    <header
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
-        scrolled || !isHome
-          ? "backdrop-blur-md bg-[#0A0A0A]/90 shadow-lg shadow-black/20"
-          : "bg-transparent"
-      }`}
-    >
+    <header className="fixed top-0 left-0 right-0 z-50 transition-all duration-300 backdrop-blur-md bg-[#0A0A0A]/70 shadow-lg shadow-black/20">
+
       <nav className="max-w-7xl mx-auto px-4 md:px-8 lg:px-16 h-16 flex items-center justify-between">
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2">

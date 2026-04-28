@@ -10,6 +10,7 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 import { BOOKING_URL, STATS } from "@/lib/constants";
+import Aurora from "./Aurora";
 
 const PARTICLES = [
   { x: 8,  y: 18, size: 8,  delay: 0.20, color: "#36D4FF" },
@@ -97,6 +98,16 @@ export default function HeroSection() {
     >
       {/* Sticky viewport */}
       <div className="sticky top-0 h-screen overflow-hidden bg-brand-dark">
+
+        {/* ── Layer −1 · Aurora (WebGL background) ── */}
+        <div className="absolute inset-0 pointer-events-none">
+          <Aurora
+            colorStops={["#36D4FF", "#89F6EF", "#4055A9"]}
+            blend={0.34}
+            amplitude={1.0}
+            speed={0.8}
+          />
+        </div>
 
         {/* ── Layer 0 · Gradient orbs (slowest / deepest) ──── */}
         <motion.div
@@ -220,7 +231,7 @@ export default function HeroSection() {
           className="absolute inset-0 z-10 flex items-center"
           style={{ opacity: contentOpacity }}
         >
-          <div className="w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-16 pt-24 pb-16">
+          <div className="w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-16 pt-40 pb-16">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
               {/* Text */}
@@ -323,7 +334,7 @@ export default function HeroSection() {
                 transition={{ duration: 0.8, delay: 0.3, ease: "easeOut" }}
                 style={{ y: imageY }}
               >
-                <div className="relative h-[520px] w-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-brand-blue/10">
+                <div className="relative h-[520px] w-full rounded-2xl overflow-hidden border border-white/10 shadow-2xl shadow-brand-blue/10 bg-brand-dark">
                   <Image
                     src="/Hero%20Header.png"
                     alt="Hero header"
