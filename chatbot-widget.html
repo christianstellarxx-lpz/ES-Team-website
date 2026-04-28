@@ -1,0 +1,1086 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ES Team Chat Widget</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Open+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
+  <style>
+    /* =========================================================
+       ES TEAM CHATBOT WIDGET  v2.0
+       Self-contained · No API key in code
+       Embed: drop <div id="es-widget"> + <style> + <script>
+       into any page body, or serve as a standalone file.
+    ========================================================= */
+
+    /* -- Reset inside widget only -- */
+    #es-widget, #es-widget * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* ── 1. ROOT CONTAINER ──────────────────────────────── */
+    #es-widget {
+      position: fixed;
+      bottom: 28px;
+      right: 28px;
+      z-index: 999999;
+      font-family: 'Open Sans', sans-serif;
+      --c-aqua:   #89F6EF;
+      --c-blue:   #36D4FF;
+      --c-deep:   #4055A9;
+      --c-black:  #0d0d1a;
+      --c-white:  #ffffff;
+      --c-muted:  #6b7a99;
+      --c-bg:     #f4f7fb;
+      --c-border: #e4e9f2;
+      --radius-panel: 20px;
+      --shadow-panel: 0 16px 56px rgba(13,13,26,.14), 0 2px 8px rgba(13,13,26,.06);
+    }
+
+    /* ── 2. LAUNCHER BUTTON ─────────────────────────────── */
+    #es-launcher {
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--c-aqua) 0%, var(--c-blue) 100%);
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      box-shadow: 0 4px 20px rgba(54, 212, 255, .45);
+      transition: transform .2s cubic-bezier(.34,1.56,.64,1), box-shadow .2s;
+    }
+    #es-launcher:hover {
+      transform: scale(1.07);
+      box-shadow: 0 6px 28px rgba(54, 212, 255, .6);
+    }
+
+    /* Pulse ring */
+    #es-launcher::before {
+      content: '';
+      position: absolute;
+      inset: -3px;
+      border-radius: 50%;
+      background: transparent;
+      border: 3px solid var(--c-blue);
+      opacity: 0;
+      animation: es-pulse 2.4s ease-out infinite;
+    }
+    @keyframes es-pulse {
+      0%   { transform: scale(1);    opacity: .65; }
+      80%  { transform: scale(1.55); opacity: 0;   }
+      100% { transform: scale(1.55); opacity: 0;   }
+    }
+
+    /* Stop pulse while open */
+    #es-widget.is-open #es-launcher::before { animation: none; }
+
+    /* Icon swap */
+    #es-launcher .ico-chat  { display: flex; }
+    #es-launcher .ico-close { display: none; }
+    #es-widget.is-open #es-launcher .ico-chat  { display: none; }
+    #es-widget.is-open #es-launcher .ico-close { display: flex; }
+
+    #es-launcher svg { flex-shrink: 0; }
+
+    /* Notification badge */
+    #es-badge {
+      position: absolute;
+      top: -1px; right: -1px;
+      width: 20px; height: 20px;
+      background: #f03e3e;
+      border-radius: 50%;
+      border: 2.5px solid #fff;
+      font-family: 'Poppins', sans-serif;
+      font-size: 10px; font-weight: 700;
+      color: #fff;
+      display: none;
+      align-items: center;
+      justify-content: center;
+      line-height: 1;
+    }
+    #es-badge.show { display: flex; }
+
+    /* ── 3. CHAT PANEL ──────────────────────────────────── */
+    #es-panel {
+      position: absolute;
+      bottom: 74px;
+      right: 0;
+      width: 380px;
+      height: 520px;
+      max-height: calc(100dvh - 110px);
+      background: var(--c-white);
+      border-radius: var(--radius-panel);
+      box-shadow: var(--shadow-panel);
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      transform-origin: bottom right;
+
+      /* Closed state */
+      transform: translateY(18px) scale(.93);
+      opacity: 0;
+      pointer-events: none;
+      transition:
+        transform .3s cubic-bezier(.34,1.56,.64,1),
+        opacity   .22s ease;
+    }
+    #es-widget.is-open #es-panel {
+      transform: translateY(0) scale(1);
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    /* ── 4. HEADER ──────────────────────────────────────── */
+    #es-header {
+      background: linear-gradient(130deg, var(--c-blue) 0%, var(--c-deep) 100%);
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 13px;
+      flex-shrink: 0;
+    }
+
+    .es-hdr-logo {
+      width: 44px; height: 44px;
+      border-radius: 12px;
+      background: rgba(255,255,255,.18);
+      border: 1.5px solid rgba(255,255,255,.3);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .es-hdr-logo svg { width: 26px; height: 26px; fill: #fff; }
+
+    .es-hdr-copy { flex: 1; min-width: 0; }
+    .es-hdr-name {
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 15px;
+      color: #fff;
+      letter-spacing: -.01em;
+      line-height: 1.2;
+    }
+    .es-hdr-sub {
+      font-size: 11.5px;
+      color: rgba(255,255,255,.8);
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      margin-top: 3px;
+    }
+    .es-online {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--c-aqua);
+      display: inline-block;
+      box-shadow: 0 0 0 2px rgba(137,246,239,.35);
+      flex-shrink: 0;
+    }
+
+    #es-close {
+      background: rgba(255,255,255,.18);
+      border: none;
+      cursor: pointer;
+      width: 34px; height: 34px;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      transition: background .18s;
+      flex-shrink: 0;
+    }
+    #es-close:hover { background: rgba(255,255,255,.28); }
+    #es-close svg {
+      width: 16px; height: 16px;
+      stroke: #fff; fill: none;
+      stroke-width: 2.5; stroke-linecap: round;
+    }
+
+    /* ── 5. MESSAGES AREA ───────────────────────────────── */
+    #es-msgs {
+      flex: 1;
+      overflow-y: auto;
+      padding: 18px 14px 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      background: var(--c-bg);
+      scroll-behavior: smooth;
+    }
+    #es-msgs::-webkit-scrollbar { width: 4px; }
+    #es-msgs::-webkit-scrollbar-track { background: transparent; }
+    #es-msgs::-webkit-scrollbar-thumb { background: #d0d7e5; border-radius: 2px; }
+
+    /* Message row */
+    .es-row {
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      animation: es-fadein .22s ease both;
+    }
+    @keyframes es-fadein {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .es-row.user { flex-direction: row-reverse; }
+
+    /* Bot avatar */
+    .es-avt {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--c-deep) 0%, var(--c-blue) 100%);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+    }
+    .es-avt svg { width: 16px; height: 16px; fill: #fff; }
+
+    /* Column holds bubble + timestamp */
+    .es-col {
+      display: flex;
+      flex-direction: column;
+      max-width: 76%;
+    }
+    .es-row.user .es-col { align-items: flex-end; }
+
+    /* Bubble */
+    .es-bub {
+      padding: 10px 14px;
+      font-size: 13.5px;
+      line-height: 1.6;
+      border-radius: 16px;
+      word-break: break-word;
+    }
+    .es-row.bot  .es-bub {
+      background: var(--c-white);
+      color: var(--c-black);
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 1px 6px rgba(13,13,26,.07);
+    }
+    .es-row.user .es-bub {
+      background: linear-gradient(135deg, var(--c-blue) 0%, var(--c-deep) 100%);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+    .es-bub a { color: var(--c-blue); font-weight: 600; text-decoration: none; }
+    .es-bub a:hover { text-decoration: underline; }
+    .es-row.user .es-bub a { color: rgba(255,255,255,.9); }
+
+    /* Timestamp */
+    .es-ts {
+      font-size: 10px;
+      color: #b3bcd0;
+      margin-top: 4px;
+      padding: 0 3px;
+    }
+
+    /* ── 6. CTA CARD ────────────────────────────────────── */
+    /* CTA rows get a wider column so the button has room */
+    .es-row.cta .es-col { max-width: 88%; }
+
+    .es-cta-card {
+      background: var(--c-white);
+      border-radius: 16px;
+      border-bottom-left-radius: 4px;
+      padding: 14px 15px;
+      box-shadow: 0 1px 6px rgba(13,13,26,.07);
+    }
+    .es-cta-card p {
+      font-size: 13.5px;
+      line-height: 1.6;
+      color: var(--c-black);
+      margin-bottom: 11px;
+    }
+    .es-cta-btn {
+      display: block;
+      width: 100%;
+      text-align: center;
+      text-decoration: none;
+      background: var(--c-blue);
+      color: #fff;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 700;
+      font-size: 13.5px;
+      padding: 11px 16px;
+      border-radius: 10px;
+      letter-spacing: .01em;
+      transition: filter .18s, transform .16s;
+      box-shadow: 0 4px 14px rgba(54, 212, 255, .38);
+    }
+    .es-cta-btn:hover {
+      filter: brightness(1.06);
+      transform: translateY(-1px);
+    }
+    .es-cta-btn:active { transform: translateY(0); }
+
+    /* ── 7. TYPING INDICATOR ────────────────────────────── */
+    .es-typing-wrap {
+      background: var(--c-white);
+      border-radius: 16px;
+      border-bottom-left-radius: 4px;
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      box-shadow: 0 1px 6px rgba(13,13,26,.07);
+    }
+    .es-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--c-blue);
+      animation: es-bounce 1.3s ease-in-out infinite;
+    }
+    .es-dot:nth-child(2) { animation-delay: .18s; }
+    .es-dot:nth-child(3) { animation-delay: .36s; }
+    @keyframes es-bounce {
+      0%, 60%, 100% { transform: translateY(0);    opacity: .5; }
+      30%            { transform: translateY(-6px); opacity: 1;  }
+    }
+
+    /* ── 8. QUICK REPLIES ───────────────────────────────── */
+    #es-qr {
+      padding: 6px 14px 10px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+      background: var(--c-bg);
+      flex-shrink: 0;
+    }
+    .es-qr-btn {
+      background: var(--c-white);
+      border: 1.5px solid var(--c-blue);
+      color: var(--c-deep);
+      padding: 6px 13px;
+      border-radius: 20px;
+      font-size: 12.5px;
+      font-family: 'Poppins', sans-serif;
+      font-weight: 500;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background .17s, color .17s, transform .13s;
+      line-height: 1.3;
+    }
+    .es-qr-btn:hover {
+      background: var(--c-blue);
+      color: #fff;
+      border-color: var(--c-blue);
+      transform: translateY(-1px);
+    }
+    .es-qr-btn:active { transform: translateY(0); }
+
+    /* ── 9. INPUT AREA ──────────────────────────────────── */
+    #es-input-area {
+      padding: 11px 14px;
+      background: var(--c-white);
+      border-top: 1px solid var(--c-border);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+    #es-input {
+      flex: 1;
+      border: 1.5px solid var(--c-border);
+      border-radius: 22px;
+      padding: 9px 15px;
+      font-size: 13.5px;
+      font-family: 'Open Sans', sans-serif;
+      outline: none;
+      color: var(--c-black);
+      background: var(--c-bg);
+      transition: border-color .18s, background .18s;
+    }
+    #es-input:focus { border-color: var(--c-blue); background: #fff; }
+    #es-input::placeholder { color: #aab2c4; }
+    #es-input:disabled { opacity: .6; cursor: not-allowed; }
+
+    #es-send {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      background: linear-gradient(135deg, var(--c-blue) 0%, var(--c-deep) 100%);
+      border: none;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 2px 10px rgba(54, 212, 255, .35);
+      transition: opacity .18s, transform .18s;
+    }
+    #es-send:hover  { opacity: .9; transform: scale(1.06); }
+    #es-send:active { transform: scale(.97); }
+    #es-send:disabled { opacity: .4; cursor: default; transform: none; }
+    #es-send svg { width: 18px; height: 18px; fill: #fff; }
+
+    /* ── 10. FOOTER ─────────────────────────────────────── */
+    #es-footer {
+      text-align: center;
+      font-size: 10px;
+      color: #c4cdd6;
+      font-family: 'Poppins', sans-serif;
+      padding: 4px 0 5px;
+      background: var(--c-white);
+      flex-shrink: 0;
+    }
+    #es-footer a { color: #b0bec5; text-decoration: none; }
+    #es-footer a:hover { color: var(--c-blue); }
+
+    /* ── 11. MOBILE ─────────────────────────────────────── */
+    @media (max-width: 440px) {
+      #es-widget { bottom: 18px; right: 14px; }
+      #es-panel {
+        width: calc(100vw - 20px);
+        right: -7px;
+        height: calc(100dvh - 96px);
+        border-radius: 16px;
+      }
+    }
+
+    /* ── 12. UTILITY ────────────────────────────────────── */
+    .es-sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+  </style>
+</head>
+<body>
+
+<!-- =====================================================
+     ES TEAM CHATBOT WIDGET
+     ─────────────────────────────────────────────────
+     SETUP
+     Set window.ES_CHAT_ENDPOINT to your backend proxy
+     URL that forwards to Anthropic and injects the key.
+
+       <script>
+         window.ES_CHAT_ENDPOINT = '/api/chat';
+       </script>
+
+     If omitted the widget calls Anthropic directly
+     (requires the platform to add auth headers).
+     Graceful fallback is shown on any API error.
+===================================================== -->
+
+<div id="es-widget" role="complementary" aria-label="ES Team chat widget">
+
+  <!-- Launcher -->
+  <button
+    id="es-launcher"
+    aria-label="Open ES Team chat"
+    aria-expanded="false"
+    aria-controls="es-panel"
+  >
+    <span id="es-badge" aria-label="New message" role="status">1</span>
+
+    <!-- Chat icon (closed) -->
+    <span class="ico-chat" aria-hidden="true">
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="white" xmlns="http://www.w3.org/2000/svg">
+        <path d="M20 2H4C2.9 2 2 2.9 2 4v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H6l-2 2V4h16v12z"/>
+      </svg>
+    </span>
+
+    <!-- Close icon (open) -->
+    <span class="ico-close" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round">
+        <line x1="18" y1="6" x2="6" y2="18"/>
+        <line x1="6"  y1="6" x2="18" y2="18"/>
+      </svg>
+    </span>
+  </button>
+
+  <!-- Panel -->
+  <div
+    id="es-panel"
+    role="dialog"
+    aria-label="ES Team Chat"
+    aria-modal="true"
+  >
+
+    <!-- Header -->
+    <div id="es-header">
+      <div class="es-hdr-logo" aria-hidden="true">
+        <!-- Robot / assistant icon -->
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M20 9V7c0-1.1-.9-2-2-2h-3c0-1.66-1.34-3-3-3S9 3.34 9 5H6c-1.1 0-2 .9-2 2v2c-1.66 0-3 1.34-3 3s1.34 3 3 3v4c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-4c1.66 0 3-1.34 3-3s-1.34-3-3-3zm-2 11H6V7h12v13zm-5-4h-2v-2h2v2zm0-4h-2V8h2v4z"/>
+        </svg>
+      </div>
+      <div class="es-hdr-copy">
+        <div class="es-hdr-name">ES Team</div>
+        <div class="es-hdr-sub">
+          <span class="es-online" aria-hidden="true"></span>
+          Virtual Assistant · Online
+        </div>
+      </div>
+      <button id="es-close" aria-label="Close chat">
+        <svg viewBox="0 0 24 24">
+          <line x1="18" y1="6"  x2="6"  y2="18"/>
+          <line x1="6"  y1="6"  x2="18" y2="18"/>
+        </svg>
+      </button>
+    </div>
+
+    <!-- Messages -->
+    <div id="es-msgs" role="log" aria-live="polite" aria-label="Chat messages"></div>
+
+    <!-- Quick replies -->
+    <div id="es-qr" role="group" aria-label="Quick reply options"></div>
+
+    <!-- Input -->
+    <div id="es-input-area">
+      <label for="es-input" class="es-sr">Type your message</label>
+      <input
+        type="text"
+        id="es-input"
+        placeholder="Type a message…"
+        autocomplete="off"
+        maxlength="600"
+      />
+      <button id="es-send" aria-label="Send message">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+          <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
+        </svg>
+      </button>
+    </div>
+
+    <div id="es-footer">Powered by <a href="https://esteam.work" target="_blank" rel="noopener">ES Team</a></div>
+
+  </div><!-- /es-panel -->
+</div><!-- /es-widget -->
+
+<script>
+/* ==========================================================
+   ES TEAM CHATBOT WIDGET  v2.0
+   ─────────────────────────────────────────────────────────
+   API KEY: intentionally absent — handled by the platform.
+   Set window.ES_CHAT_ENDPOINT to your backend proxy before
+   this script runs; defaults to direct Anthropic endpoint.
+   All errors produce a branded fallback message.
+========================================================== */
+
+(function () {
+  'use strict';
+
+  /* ── CONFIG ─────────────────────────────────────────── */
+  var CFG = {
+    endpoint:   (window.ES_CHAT_ENDPOINT) || 'https://api.anthropic.com/v1/messages',
+    model:      'claude-sonnet-4-20250514',
+    maxTokens:  1000,
+    bookingUrl: 'https://api.leadconnectorhq.com/widget/bookings/discovery-call-jonathan-sarong'
+  };
+
+  /* ── SYSTEM PROMPT ──────────────────────────────────── */
+  var SYS = [
+    'You are the virtual assistant for ES Team, a premium digital support agency.',
+    'Tagline: "Success Is In Our Hands." Contact: info@esteam.work.',
+    '',
+    'SERVICES:',
+    '1. Social Media Management — Full management across Instagram, Facebook, LinkedIn, TikTok.',
+    '   Includes content calendars, graphic design, captions, hashtags, engagement, reporting.',
+    '2. Digital Marketing Support — Google Ads, Meta Ads, SEO, email automation, analytics, ROI optimisation.',
+    '3. Administrative Virtual Assistance — Scheduling, inbox, data entry, research.',
+    '   Proficient in Google Workspace, MS Office, CRMs, Asana, Trello, Monday.',
+    '4. Content Creation & Scheduling — Social posts, blogs, newsletters, full lifecycle management.',
+    '5. Lead Generation & Research — Prospect lists, LinkedIn outreach, lead verification, automated follow-up.',
+    '',
+    'VOICE: Clear · Concise · Friendly but professional · Solution-focused · No jargon.',
+    '',
+    'RULES:',
+    '- Keep replies to 2–4 sentences for most questions.',
+    '- Pricing questions: say pricing is custom and invite a Discovery Call.',
+    '- Unknown topics: admit it warmly and direct to the team.',
+    '- Never fabricate prices, stats, or guarantees.',
+    '- Always close with a CTA: ask a follow-up question or suggest the Discovery Call.',
+    '- Never use HTML tags in your responses. Write email addresses as plain text (e.g. info@esteam.work).',
+    '- Discovery Call link: ' + CFG.bookingUrl,
+    '',
+    '## FREQUENTLY ASKED QUESTIONS',
+    '',
+    '**Q: What is ES Team?**',
+    'A: ES Team is a digital service brand that provides virtual assistance and digital marketing support to help businesses scale efficiently. Our tagline is "Success Is In Our Hands."',
+    '',
+    '**Q: What services does ES Team offer?**',
+    'A: We offer five core services: Social Media Management, Digital Marketing Support, Administrative Virtual Assistance, Content Creation and Scheduling, and Lead Generation and Research.',
+    '',
+    '**Q: Who are ES Team\'s services for?**',
+    'A: Our services are designed for small to medium-sized businesses in the US and Canada, entrepreneurs, startups, online business owners, coaches, consultants, and agencies.',
+    '',
+    '**Q: How do I get started with ES Team?**',
+    'A: The best first step is to book a free Discovery Call with our team. We\'ll learn about your business, understand your needs, and recommend the right services for you.',
+    '',
+    '**Q: Does ES Team work with clients outside the US and Canada?**',
+    'A: Our primary focus is on businesses in the US and Canada, but we\'re open to conversations with businesses from other regions. Reach out to us at info@esteam.work to discuss your situation.',
+    '',
+    '**Q: How does ES Team\'s Virtual Assistance service work?**',
+    'A: Our virtual assistants handle day-to-day administrative tasks — such as scheduling, email management, data entry, and research — so you can focus on growing your business.',
+    '',
+    '**Q: What does ES Team do for Social Media Management?**',
+    'A: We manage your social media presence end-to-end — from strategy and content creation to posting, scheduling, and community engagement — to help you grow and stay consistent online.',
+    '',
+    '**Q: What is included in Digital Marketing Support?**',
+    'A: Our digital marketing support covers online visibility strategies, campaign assistance, and performance-focused marketing efforts tailored to your business goals.',
+    '',
+    '**Q: Can ES Team help me create content for my business?**',
+    'A: Yes! Our Content Creation and Scheduling service covers crafting engaging posts, captions, graphics briefs, and content calendars — all aligned with your brand voice and audience.',
+    '',
+    '**Q: What does Lead Generation and Research involve?**',
+    'A: We identify and qualify potential leads for your business through targeted research, list building, and outreach support — helping fill your pipeline with the right prospects.',
+    '',
+    '**Q: How is ES Team different from other VA agencies?**',
+    'A: ES Team takes a personalized approach to every client. We offer flexible service offerings, focus on measurable results, and pride ourselves on strong communication and reliability.',
+    '',
+    '**Q: How do I contact ES Team?**',
+    'A: You can reach us by email at info@esteam.work or book a free Discovery Call directly through our website.',
+    '',
+    '**Q: How much do ES Team\'s services cost?**',
+    'A: Pricing is tailored to each client\'s needs and scope of work. Book a free Discovery Call and we\'ll walk you through options that fit your budget and goals.',
+    '',
+    '**Q: What happens on a Discovery Call?**',
+    'A: A Discovery Call is a free, no-obligation conversation with our team. We\'ll ask about your business, your challenges, and your goals — then recommend the best way ES Team can support you.',
+    '',
+    '**Q: Is there a minimum contract or commitment?**',
+    'A: We offer flexible arrangements to suit different business needs. Our team will discuss commitment options during your Discovery Call.'
+  ].join('\n');
+
+  /* ── FALLBACK MESSAGES (no API needed) ─────────────── */
+  var FALLBACKS = [
+    'Great question! Our team would love to walk you through that. You can reach us at <a href="mailto:info@esteam.work">info@esteam.work</a> or book a quick Discovery Call — we\'ll get everything answered there. 😊',
+    'I\'m having a little trouble connecting right now. Please drop us a line at <a href="mailto:info@esteam.work">info@esteam.work</a> and our team will get back to you within 1 business day!',
+    'Thanks for your patience — I can\'t reach my AI brain at the moment! The fastest way to get your answer is a quick Discovery Call with our team. 🙌'
+  ];
+  var fallbackIdx = 0;
+  function nextFallback() {
+    var msg = FALLBACKS[fallbackIdx % FALLBACKS.length];
+    fallbackIdx++;
+    return msg;
+  }
+
+  /* ── SERVICE DATA ───────────────────────────────────── */
+  var SVC = {
+    social: {
+      label:   '📱 Social Media Management',
+      intro:   'We manage your entire social presence — strategy, content creation, posting, and community engagement across Instagram, Facebook, LinkedIn, TikTok, and more. Our team builds a consistent brand voice that grows your audience and drives real business results. Think of us as your dedicated social team, without the full-time cost.',
+      more:    'We handle content calendars, branded graphics, caption writing, hashtag research, audience engagement, and monthly performance reports. Whether you\'re building from zero or scaling an established presence, we adapt to your goals. You run your business — we keep your socials thriving every single day.'
+    },
+    marketing: {
+      label:   '📣 Digital Marketing Support',
+      intro:   'From paid ad campaigns to email automation, we deliver end-to-end digital marketing support tailored to your goals. Our data-driven approach finds the right audience, drives qualified traffic, and turns clicks into customers. Every campaign is tracked and optimised so your budget works its hardest.',
+      more:    'Our services include Google Ads, Facebook & Instagram Ads, SEO strategy, email sequences, and clear ROI reporting. We set up, manage, and refine your campaigns continuously. You\'ll receive easy-to-read reports so you always know exactly how your investment is performing.'
+    },
+    admin: {
+      label:   '🗂️ Virtual Assistance',
+      intro:   'Our virtual assistants handle the time-consuming admin tasks that pull your focus from growth — scheduling, inbox management, data entry, research, and more. We plug seamlessly into your existing workflow and tools so the transition is effortless. It\'s like having a dedicated EA, available remotely.',
+      more:    'Our VAs are proficient in Google Workspace, Microsoft Office, CRM platforms, and tools like Asana, Trello, and Monday.com. Support is flexible — part-time or full-time — matched to your workload. Onboarding is fast; your VA is productive within days.'
+    },
+    content: {
+      label:   '✍️ Content Creation & Scheduling',
+      intro:   'We create high-quality, on-brand content for all your channels — social posts, blog articles, newsletters, and more. Our team manages the full content lifecycle: strategy, writing, design, approvals, and scheduling. Consistent content keeps your brand top-of-mind and fuels your marketing funnel.',
+      more:    'We build a tailored content strategy around your brand identity, audience, and business objectives, then execute every piece at a high standard. From punchy Instagram captions to in-depth thought leadership — we cover it all. You\'ll always have fresh, professional content ready without lifting a finger.'
+    },
+    leads: {
+      label:   '🎯 Lead Generation & Research',
+      intro:   'We build a reliable pipeline of qualified prospects so your sales team can focus on closing, not hunting. Using targeted outreach and research, we identify and vet potential clients that match your ideal customer profile. More quality leads means more revenue opportunities.',
+      more:    'Our team uses LinkedIn outreach, database research, and manual prospecting to build accurate, verified lead lists. Every lead is checked for relevance before it reaches you. We can also set up automated follow-up sequences to warm cold prospects and keep your pipeline consistently active.'
+    },
+    other: {
+      label:   '💬 General Inquiry',
+      intro:   'Happy to help with whatever\'s on your mind! Whether you have a general question, want to explore a custom solution, or aren\'t sure which service fits best — just type your question and I\'ll do my best to help.',
+      more:    null
+    }
+  };
+
+  /* ── STATE ──────────────────────────────────────────── */
+  var S = {
+    open:    false,
+    ready:   false,   // greeting shown
+    busy:    false,
+    service: null,
+    history: []       // [{role, content}] for API context
+  };
+
+  /* ── DOM ────────────────────────────────────────────── */
+  var $w       = document.getElementById('es-widget');
+  var $launch  = document.getElementById('es-launcher');
+  var $panel   = document.getElementById('es-panel');
+  var $close   = document.getElementById('es-close');
+  var $msgs    = document.getElementById('es-msgs');
+  var $qr      = document.getElementById('es-qr');
+  var $input   = document.getElementById('es-input');
+  var $send    = document.getElementById('es-send');
+  var $badge   = document.getElementById('es-badge');
+
+  /* ── UTILS ──────────────────────────────────────────── */
+  function wait(ms) { return new Promise(function(r){ setTimeout(r, ms); }); }
+
+  function ts() {
+    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
+
+  function scrollEnd() {
+    setTimeout(function(){ $msgs.scrollTop = $msgs.scrollHeight; }, 40);
+  }
+
+  function clearQR() { $qr.innerHTML = ''; }
+
+  function lock()   { $input.disabled = true;  $send.disabled = true; }
+  function unlock() { $input.disabled = false; $send.disabled = false; }
+
+  /* Simple inline markdown: **bold**, *italic*, [text](url) */
+  function md(text) {
+    return String(text)
+      .replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;')
+      .replace(/([a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,})/g,'<a href="mailto:$1">$1</a>')
+      .replace(/\*\*(.+?)\*\*/g,'<strong>$1</strong>')
+      .replace(/\*(.+?)\*/g,'<em>$1</em>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g,
+        '<a href="$2" target="_blank" rel="noopener">$1</a>')
+      .replace(/\n/g,'<br>');
+  }
+
+  /* ── RENDER ─────────────────────────────────────────── */
+  function botAvtHTML() {
+    return '<div class="es-avt" aria-hidden="true">'
+      + '<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 9V7c0-1.1-.9-2-2-2h-3c0-1.66-1.34-3-3-3S9 3.34 9 5H6c-1.1 0-2 .9-2 2v2c-1.66 0-3 1.34-3 3s1.34 3 3 3v4c0 1.1.9 2 2 2h12c1.1 0 2-.9 2-2v-4c1.66 0 3-1.34 3-3s-1.34-3-3-3zm-2 11H6V7h12v13zm-5-4h-2v-2h2v2zm0-4h-2V8h2v4z"/></svg>'
+      + '</div>';
+  }
+
+  function addBot(html) {
+    var row = document.createElement('div');
+    row.className = 'es-row bot';
+    row.innerHTML = botAvtHTML()
+      + '<div class="es-col">'
+      +   '<div class="es-bub">' + html + '</div>'
+      +   '<div class="es-ts">' + ts() + '</div>'
+      + '</div>';
+    $msgs.appendChild(row);
+    scrollEnd();
+  }
+
+  function addUser(text) {
+    var row = document.createElement('div');
+    row.className = 'es-row user';
+    var bub = document.createElement('div');
+    bub.className = 'es-bub';
+    bub.textContent = text;
+    var time = document.createElement('div');
+    time.className = 'es-ts';
+    time.textContent = ts();
+    var col = document.createElement('div');
+    col.className = 'es-col';
+    col.appendChild(bub);
+    col.appendChild(time);
+    row.appendChild(col);
+    $msgs.appendChild(row);
+    scrollEnd();
+  }
+
+  function addCTA(bodyHtml) {
+    var row = document.createElement('div');
+    row.className = 'es-row bot cta';
+    row.innerHTML = botAvtHTML()
+      + '<div class="es-col">'
+      +   '<div class="es-cta-card">'
+      +     '<p>' + bodyHtml + '</p>'
+      +     '<a href="' + CFG.bookingUrl + '" target="_blank" rel="noopener noreferrer" class="es-cta-btn">'
+      +       '📅 Book a Free Discovery Call'
+      +     '</a>'
+      +   '</div>'
+      +   '<div class="es-ts">' + ts() + '</div>'
+      + '</div>';
+    $msgs.appendChild(row);
+    scrollEnd();
+  }
+
+  function showTyping() {
+    var row = document.createElement('div');
+    row.className = 'es-row bot';
+    row.id = 'es-typing';
+    row.innerHTML = botAvtHTML()
+      + '<div class="es-typing-wrap">'
+      +   '<span class="es-dot"></span>'
+      +   '<span class="es-dot"></span>'
+      +   '<span class="es-dot"></span>'
+      + '</div>';
+    $msgs.appendChild(row);
+    scrollEnd();
+  }
+
+  function hideTyping() {
+    var el = document.getElementById('es-typing');
+    if (el) el.remove();
+  }
+
+  function showQR(btns) {
+    clearQR();
+    btns.forEach(function(b) {
+      var btn = document.createElement('button');
+      btn.className = 'es-qr-btn';
+      btn.textContent = b.label;
+      btn.addEventListener('click', function() {
+        if (!S.busy) b.action();
+      });
+      $qr.appendChild(btn);
+    });
+  }
+
+  /* ── BOT HELPERS ────────────────────────────────────── */
+  async function say(html, delayMs) {
+    delayMs = delayMs !== undefined ? delayMs : 700;
+    showTyping();
+    await wait(delayMs);
+    hideTyping();
+    addBot(html);
+  }
+
+  async function cta(delayMs) {
+    delayMs = delayMs !== undefined ? delayMs : 650;
+    showTyping();
+    await wait(delayMs);
+    hideTyping();
+    addCTA(
+      'Ready to take the next step? Book a <strong>free Discovery Call</strong> with our team '
+      + 'and let\'s talk about how ES Team can support your business goals. ✨'
+    );
+  }
+
+  /* ── CONVERSATION FLOWS ─────────────────────────────── */
+
+  async function greeting() {
+    lock();
+    await wait(380);
+    await say(
+      '👋 Hi there! Welcome to <strong>ES Team</strong> — where '
+      + '<em>Success Is In Our Hands</em>. '
+      + 'I\'m your virtual assistant, here to help you discover how we can support your business. 😊',
+      900
+    );
+    await wait(220);
+    await say('What can I help you with today? Choose a service below or type your question — I\'m here for both! 👇', 680);
+    unlock();
+    showSvcButtons();
+    $input.focus();
+  }
+
+  function showSvcButtons() {
+    showQR([
+      { label: SVC.social.label,    action: function(){ pickSvc('social');    } },
+      { label: SVC.marketing.label, action: function(){ pickSvc('marketing'); } },
+      { label: SVC.admin.label,     action: function(){ pickSvc('admin');     } },
+      { label: SVC.content.label,   action: function(){ pickSvc('content');   } },
+      { label: SVC.leads.label,     action: function(){ pickSvc('leads');     } },
+      { label: SVC.other.label,     action: function(){ pickSvc('other');     } }
+    ]);
+  }
+
+  async function pickSvc(key) {
+    if (S.busy) return;
+    S.busy = true;
+    S.service = key;
+    clearQR();
+    var svc = SVC[key];
+    addUser(svc.label);
+    await say(svc.intro);
+
+    if (key === 'other') {
+      await wait(220);
+      await say('Feel free to type your question below and I\'ll do my best to help! Or connect with our team directly:', 620);
+      await cta(500);
+      showQR([
+        { label: '🏠 Back to services', action: goBack },
+        { label: '✉️ Email us',          action: emailCTA }
+      ]);
+    } else {
+      showQR([
+        { label: '🔍 Tell me more', action: tellMore   },
+        { label: '🚀 Get started',  action: getStarted }
+      ]);
+    }
+    S.busy = false;
+  }
+
+  async function tellMore() {
+    if (S.busy) return;
+    S.busy = true;
+    clearQR();
+    addUser('Tell me more');
+    var svc = SVC[S.service];
+    if (svc.more) await say(svc.more);
+    await wait(220);
+    await cta(580);
+    showQR([
+      { label: '🏠 Back to services', action: goBack },
+      { label: '✉️ Email us',          action: emailCTA }
+    ]);
+    S.busy = false;
+  }
+
+  async function getStarted() {
+    if (S.busy) return;
+    S.busy = true;
+    clearQR();
+    addUser('Get started');
+    await say('Excellent! You\'re one step away from levelling up your business. 🎉', 620);
+    await wait(220);
+    await cta(540);
+    showQR([
+      { label: '🏠 Back to services', action: goBack },
+      { label: '✉️ Email us',          action: emailCTA }
+    ]);
+    S.busy = false;
+  }
+
+  async function goBack() {
+    if (S.busy) return;
+    S.busy = true;
+    clearQR();
+    S.service = null;
+    addUser('Back to services');
+    await say('Of course! Here\'s everything ES Team can help you with 👇', 580);
+    showSvcButtons();
+    S.busy = false;
+  }
+
+  async function emailCTA() {
+    if (S.busy) return;
+    S.busy = true;
+    clearQR();
+    addUser('Email us');
+    await say(
+      'You can reach us at <a href="mailto:info@esteam.work">info@esteam.work</a> '
+      + '— we reply within 1 business day. Or book a call for the fastest response:',
+      640
+    );
+    await wait(220);
+    await cta(500);
+    showQR([{ label: '🏠 Back to services', action: goBack }]);
+    S.busy = false;
+  }
+
+  /* ── ANTHROPIC API CALL ─────────────────────────────── */
+
+  async function callAPI(text) {
+    S.history.push({ role: 'user', content: text });
+    var messages = S.history.slice(-12);
+
+    var body = {
+      model:      CFG.model,
+      max_tokens: CFG.maxTokens,
+      system:     SYS,
+      messages:   messages
+    };
+
+    var headers = {
+      'Content-Type':    'application/json',
+      'anthropic-version': '2023-06-01',
+      'anthropic-dangerous-allow-browser': 'true'
+    };
+
+    try {
+      var res = await fetch(CFG.endpoint, {
+        method:  'POST',
+        headers: headers,
+        body:    JSON.stringify(body)
+      });
+
+      if (!res.ok) {
+        var errBody = {};
+        try { errBody = await res.json(); } catch(e) {}
+        console.warn('[ES Chatbot] API error', res.status, errBody);
+        return {h: nextFallback()};
+      }
+
+      var data = await res.json();
+      var reply = (data.content && data.content[0] && data.content[0].text) ? data.content[0].text : '';
+
+      if (!reply) return {h: nextFallback()};
+
+      S.history.push({ role: 'assistant', content: reply });
+      return {t: reply};
+
+    } catch (err) {
+      console.warn('[ES Chatbot] Network error', err);
+      return {h: nextFallback()};
+    }
+  }
+
+  /* ── FREE TEXT HANDLER ──────────────────────────────── */
+
+  var CTA_RE = /\b(start|begin|hire|book|call|price|cost|quote|ready|interested|sign.?up|get.?started|how.?much|package)\b/i;
+
+  async function handleText(text) {
+    if (S.busy) return;
+    S.busy = true;
+    addUser(text);
+    clearQR();
+    lock();
+
+    showTyping();
+    var reply = await callAPI(text);
+    hideTyping();
+
+    addBot(reply.h !== undefined ? reply.h : md(reply.t));
+
+    if (CTA_RE.test(text)) {
+      await wait(280);
+      await cta(480);
+    }
+
+    showQR([
+      { label: '🏠 Browse services', action: goBack },
+      { label: '📅 Book a call', action: async function() {
+        if (S.busy) return;
+        S.busy = true;
+        clearQR();
+        addUser('Book a call');
+        await cta(500);
+        showQR([{ label: '🏠 Browse services', action: goBack }]);
+        S.busy = false;
+      }}
+    ]);
+
+    unlock();
+    S.busy = false;
+  }
+
+  /* ── SEND ───────────────────────────────────────────── */
+
+  function send() {
+    var text = $input.value.trim();
+    if (!text || S.busy) return;
+    $input.value = '';
+    handleText(text);
+  }
+
+  /* ── OPEN / CLOSE ───────────────────────────────────── */
+
+  function open() {
+    S.open = true;
+    $w.classList.add('is-open');
+    $launch.setAttribute('aria-expanded', 'true');
+    $badge.classList.remove('show');
+    if (!S.ready) { S.ready = true; greeting(); }
+    else $input.focus();
+  }
+
+  function close() {
+    S.open = false;
+    $w.classList.remove('is-open');
+    $launch.setAttribute('aria-expanded', 'false');
+  }
+
+  /* ── EVENTS ─────────────────────────────────────────── */
+
+  $launch.addEventListener('click', function() { S.open ? close() : open(); });
+  $close.addEventListener('click',  close);
+  $send.addEventListener('click',   send);
+  $input.addEventListener('keydown', function(e) {
+    if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); send(); }
+  });
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape' && S.open) close();
+  });
+
+  /* Show badge after 3 s to attract attention */
+  setTimeout(function() {
+    if (!S.open) $badge.classList.add('show');
+  }, 3000);
+
+}());
+</script>
+
+</body>
+</html>

@@ -116,7 +116,7 @@ export default function Footer() {
         {/* Bottom bar */}
         <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="font-body text-gray-500 text-xs">
-            © 2025 ES Team. All rights reserved.
+            © 2026 ES Team. All rights reserved.
           </p>
           <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
             {FOOTER_LEGAL.map((item) => (
