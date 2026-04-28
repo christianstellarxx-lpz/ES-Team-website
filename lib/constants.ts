@@ -1,4 +1,4 @@
-export const BOOKING_URL = "https://api.leadconnectorhq.com/widget/bookings/jonathan-kim-sarong-personal-calendar-ddwv__elj";
+export const BOOKING_URL = "https://api.leadconnectorhq.com/widget/bookings/discovery-call-jonathan-sarong";
 
 export const NAV_LINKS = [
   { label: "Services", href: "/services" },

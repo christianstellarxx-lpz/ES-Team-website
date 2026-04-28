@@ -2,11 +2,17 @@ import Image from "next/image";
 import Link from "next/link";
 import { FiFacebook, FiMail } from "react-icons/fi";
 
+const FOOTER_LEGAL = [
+  { label: "Privacy Policy", href: "/privacy-policy" },
+  { label: "Cookie Policy", href: "/cookie-policy" },
+  { label: "Terms & Conditions", href: "/terms-and-conditions" },
+];
+
 const FOOTER_SERVICES = [
-  "Social Media Management",
-  "Digital Marketing Support",
-  "Virtual Admin Assistance",
-  "Lead Generation & Research",
+  { label: "Social Media Management", href: "/services#social-media-management" },
+  { label: "Digital Marketing Support", href: "/services#digital-marketing-support" },
+  { label: "Virtual Admin Assistance", href: "/services#virtual-admin-assistance" },
+  { label: "Lead Generation & Research", href: "/services#lead-generation-research" },
 ];
 
 const FOOTER_COMPANY = [
@@ -49,13 +55,13 @@ export default function Footer() {
               Services
             </h4>
             <ul className="space-y-3">
-              {FOOTER_SERVICES.map((s) => (
-                <li key={s}>
+              {FOOTER_SERVICES.map((item) => (
+                <li key={item.label}>
                   <Link
-                    href="/services"
+                    href={item.href}
                     className="font-body text-gray-400 text-sm hover:text-brand-blue transition-colors duration-200"
                   >
-                    {s}
+                    {item.label}
                   </Link>
                 </li>
               ))}
@@ -108,10 +114,21 @@ export default function Footer() {
         </div>
 
         {/* Bottom bar */}
-        <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-3">
+        <div className="border-t border-white/10 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4">
           <p className="font-body text-gray-500 text-xs">
             © 2025 ES Team. All rights reserved.
           </p>
+          <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2">
+            {FOOTER_LEGAL.map((item) => (
+              <Link
+                key={item.href}
+                href={item.href}
+                className="font-body text-gray-500 text-xs hover:text-brand-blue transition-colors duration-200"
+              >
+                {item.label}
+              </Link>
+            ))}
+          </div>
           <a
             href="mailto:info@esteam.work"
             className="font-body text-gray-500 text-xs hover:text-brand-blue transition-colors duration-200"
