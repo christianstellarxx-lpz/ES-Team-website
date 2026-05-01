@@ -228,10 +228,10 @@ export default function HeroSection() {
 
         {/* ── Layer 4 · Hero content ─────────────────────────── */}
         <motion.div
-          className="absolute inset-0 z-10 flex items-center"
+          className="absolute inset-0 z-10 flex items-start lg:items-center"
           style={{ opacity: contentOpacity }}
         >
-          <div className="w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-16 pt-40 pb-16">
+          <div className="w-full max-w-7xl mx-auto px-4 md:px-8 lg:px-16 pt-20 sm:pt-24 md:pt-32 lg:pt-40 pb-8 md:pb-16">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
 
               {/* Text */}
@@ -281,7 +281,7 @@ export default function HeroSection() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7, delay: 0.5 }}
-                    className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-16"
+                    className="flex flex-col sm:flex-row items-start sm:items-center gap-4 mb-8 md:mb-16"
                   >
                     <motion.a
                       href={BOOKING_URL}
@@ -305,7 +305,7 @@ export default function HeroSection() {
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.7, delay: 0.65 }}
-                    className="flex flex-wrap items-center border border-white/10 rounded-2xl overflow-hidden w-fit"
+                    className="flex flex-wrap items-center border border-white/10 rounded-2xl overflow-hidden w-full sm:w-fit"
                   >
                     {STATS.map((stat, i) => (
                       <div
