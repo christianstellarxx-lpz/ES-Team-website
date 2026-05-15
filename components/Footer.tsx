@@ -18,6 +18,7 @@ const FOOTER_SERVICES = [
 const FOOTER_COMPANY = [
   { label: "How It Works", href: "/how-it-works" },
   { label: "Why Us", href: "/why-us" },
+  { label: "Careers", href: "/careers" },
   { label: "Contact", href: "/contact" },
 ];
 
