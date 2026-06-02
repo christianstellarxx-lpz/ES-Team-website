@@ -3,6 +3,7 @@ import CareersNavbar from "@/components/CareersNavbar";
 import PageHero from "@/components/PageHero";
 import CareersContent from "@/components/CareersContent";
 import Footer from "@/components/Footer";
+import { CAREERS_BOOKING_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Careers | Join Our Virtual Assistant Team | ES Team",
@@ -48,6 +49,10 @@ export default function CareersPage() {
           subtitle="We're looking for driven, detail-oriented remote professionals ready to make a real difference for growing businesses around the world."
           image="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80"
           imageAlt="Team of remote professionals collaborating"
+          ctaText="Book Your Intro Call"
+          ctaHref="#book-intro-call"
+          ctaFallbackText="Calendar not loading? Click here to book →"
+          ctaFallbackHref={CAREERS_BOOKING_URL}
         />
         <CareersContent />
       </main>

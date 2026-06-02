@@ -163,10 +163,11 @@ export default function CareersContent() {
 
             {/* Right: Booking calendar */}
             <motion.div
+              id="book-intro-call"
               initial={{ opacity: 0, x: 30 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ duration: 0.7, ease: "easeOut", delay: 0.1 }}
-              className="w-full"
+              className="w-full scroll-mt-24"
             >
               <div className="mb-5">
                 <p className="font-heading font-bold text-brand-dark text-lg mb-1">Book Your Intro Call</p>

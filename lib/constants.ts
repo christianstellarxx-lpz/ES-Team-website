@@ -1,5 +1,8 @@
 export const BOOKING_URL = "https://api.leadconnectorhq.com/widget/bookings/discovery-call-jonathan-sarong";
 
+// Intro-call calendar shown on the Careers page (matches the embedded booking widget).
+export const CAREERS_BOOKING_URL = "https://api.leadconnectorhq.com/widget/booking/DtvHWg4TCWZXo2SVPqF3";
+
 export const NAV_LINKS = [
   { label: "Services", href: "/services" },
   { label: "How It Works", href: "/how-it-works" },

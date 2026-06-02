@@ -16,6 +16,10 @@ interface PageHeroProps {
   subtitle?: string;
   image?: string;
   imageAlt?: string;
+  ctaText?: string;
+  ctaHref?: string;
+  ctaFallbackText?: string;
+  ctaFallbackHref?: string;
 }
 
 const PAGE_PARTICLES = [
@@ -37,7 +41,17 @@ const PAGE_RINGS = [
   { x: 55, y: 12, size: 110, delay: 0.8 },
 ];
 
-export default function PageHero({ label, title, subtitle, image, imageAlt }: PageHeroProps) {
+export default function PageHero({
+  label,
+  title,
+  subtitle,
+  image,
+  imageAlt,
+  ctaText,
+  ctaHref,
+  ctaFallbackText,
+  ctaFallbackHref,
+}: PageHeroProps) {
   const sectionRef = useRef<HTMLElement>(null);
   const progress   = useMotionValue(0);
   const mouseX     = useMotionValue(0);
@@ -79,6 +93,17 @@ export default function PageHero({ label, title, subtitle, image, imageAlt }: Pa
   function handleMouseMove(e: React.MouseEvent) {
     mouseX.set((e.clientX / window.innerWidth  - 0.5) * 2);
     mouseY.set((e.clientY / window.innerHeight - 0.5) * 2);
+  }
+
+  // In-page anchor CTAs smooth-scroll to the target section instead of navigating.
+  const isHashLink = !!ctaHref && ctaHref.startsWith("#");
+
+  function handleCtaClick(e: React.MouseEvent<HTMLAnchorElement>) {
+    if (!isHashLink || !ctaHref) return;
+    const target = document.querySelector(ctaHref);
+    if (!target) return;
+    e.preventDefault();
+    target.scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
   return (
@@ -242,6 +267,39 @@ export default function PageHero({ label, title, subtitle, image, imageAlt }: Pa
                   >
                     {subtitle}
                   </motion.p>
+                )}
+
+                {ctaText && ctaHref && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 18 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.6, delay: 0.32 }}
+                    className="mt-7 flex flex-col items-start gap-3"
+                  >
+                    <a
+                      href={ctaHref}
+                      {...(isHashLink
+                        ? { onClick: handleCtaClick }
+                        : { target: "_blank", rel: "noopener noreferrer" })}
+                      className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-brand-blue to-brand-aqua px-7 py-3.5 font-heading text-sm font-bold text-brand-dark shadow-lg shadow-brand-blue/25 transition-all duration-300 hover:shadow-xl hover:shadow-brand-blue/40 hover:-translate-y-0.5"
+                    >
+                      {ctaText}
+                      <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">
+                        →
+                      </span>
+                    </a>
+
+                    {ctaFallbackText && ctaFallbackHref && (
+                      <a
+                        href={ctaFallbackHref}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="font-body text-xs text-gray-400 underline decoration-brand-blue/40 underline-offset-4 transition-colors hover:text-brand-blue"
+                      >
+                        {ctaFallbackText}
+                      </a>
+                    )}
+                  </motion.div>
                 )}
               </motion.div>
 
