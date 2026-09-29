@@ -158,3 +158,7 @@ export const TESTIMONIALS: Testimonial[] = [
     image: "https://i.pravatar.cc/150?img=12",
   },
 ];
+
+// GoHighLevel inbound webhook for Year End Party registrations (called server-side only).
+export const YEAR_END_PARTY_WEBHOOK_URL =
+  "https://services.leadconnectorhq.com/hooks/6vo3UaSIb7VBTiLfGyWx/webhook-trigger/0a7804e7-ef3c-4fc3-838c-a34a3f2b7aed";
