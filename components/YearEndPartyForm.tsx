@@ -25,6 +25,14 @@ const inputClass =
 
 const labelClass = "block font-heading font-semibold text-brand-dark text-sm mb-2";
 
+function RequiredMark() {
+  return (
+    <span aria-hidden className="text-red-500">
+      *
+    </span>
+  );
+}
+
 function ChoicePill({
   name,
   value,
@@ -68,6 +76,7 @@ export default function YearEndPartyForm() {
   const [bringing, setBringing] = useState("");
   const [plusOnes, setPlusOnes] = useState("");
   const [fileName, setFileName] = useState("");
+  const [submittedEmail, setSubmittedEmail] = useState("");
 
   const headcount = 1 + (bringing === "Yes" ? Number(plusOnes || 0) : 0);
 
@@ -99,6 +108,7 @@ export default function YearEndPartyForm() {
         const data = await res.json().catch(() => null);
         throw new Error(data?.error ?? `Status ${res.status}`);
       }
+      setSubmittedEmail(String(formData.get("email") ?? ""));
       setStatus("success");
     } catch (err) {
       setStatus("error");
@@ -121,10 +131,14 @@ export default function YearEndPartyForm() {
         <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-blue/10">
           <FiCheckCircle size={30} className="text-brand-blue" />
         </div>
-        <h3 className="font-heading font-extrabold text-brand-dark text-2xl mb-3">You&apos;re registered!</h3>
-        <p className="font-body text-gray-500 text-sm leading-relaxed max-w-sm mx-auto">
-          Thanks for signing up for the 2nd Annual ES Team Building. We&apos;ll verify your payment receipt
-          and reach out with the final details. Don&apos;t forget your exchange gift (₱500 minimum)!
+        <h3 className="font-heading font-extrabold text-brand-dark text-2xl mb-3">Registration received!</h3>
+        <p className="font-body text-gray-500 text-sm leading-relaxed max-w-sm mx-auto mb-3">
+          Thanks for signing up for the 2nd Annual ES Team Year End Getaway. We&apos;ll notify Jonathan about your
+          payment, and once it&apos;s received we&apos;ll send a confirmation email to{" "}
+          <span className="font-semibold text-brand-dark">{submittedEmail}</span>.
+        </p>
+        <p className="font-body text-gray-400 text-xs max-w-sm mx-auto">
+          Don&apos;t forget your exchange gift (₱500 minimum)!
         </p>
       </motion.div>
     );
@@ -144,24 +158,28 @@ export default function YearEndPartyForm() {
       </p>
 
       <div className="grid grid-cols-1 gap-5">
+        <p className="font-body text-xs text-gray-400">
+          All fields are required <span className="text-red-500">*</span>
+        </p>
+
         <div>
-          <label htmlFor="yep-name" className={labelClass}>Name</label>
+          <label htmlFor="yep-name" className={labelClass}>Name <RequiredMark /></label>
           <input id="yep-name" name="name" type="text" required autoComplete="name" placeholder="Juan Dela Cruz" className={inputClass} />
         </div>
 
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
           <div>
-            <label htmlFor="yep-phone" className={labelClass}>Phone</label>
+            <label htmlFor="yep-phone" className={labelClass}>Phone <RequiredMark /></label>
             <input id="yep-phone" name="phone" type="tel" required autoComplete="tel" placeholder="09XX XXX XXXX" className={inputClass} />
           </div>
           <div>
-            <label htmlFor="yep-email" className={labelClass}>Email</label>
+            <label htmlFor="yep-email" className={labelClass}>Email <RequiredMark /></label>
             <input id="yep-email" name="email" type="email" required autoComplete="email" placeholder="you@email.com" className={inputClass} />
           </div>
         </div>
 
         <fieldset>
-          <legend className={labelClass}>Bringing someone?</legend>
+          <legend className={labelClass}>Bringing someone? <RequiredMark /></legend>
           <div className="grid grid-cols-2 gap-3">
             {["Yes", "No"].map((opt) => (
               <ChoicePill
@@ -190,7 +208,7 @@ export default function YearEndPartyForm() {
               transition={{ duration: 0.3, ease: "easeOut" }}
               className="overflow-hidden"
             >
-              <legend className={labelClass}>How many are you bringing?</legend>
+              <legend className={labelClass}>How many are you bringing? <RequiredMark /></legend>
               <div className="grid grid-cols-2 gap-3">
                 {["1", "2"].map((opt) => (
                   <ChoicePill key={opt} name="plus_ones" value={opt} checked={plusOnes === opt} onChange={setPlusOnes}>
@@ -203,7 +221,7 @@ export default function YearEndPartyForm() {
         </AnimatePresence>
 
         <fieldset>
-          <legend className={labelClass}>Payment</legend>
+          <legend className={labelClass}>Payment <RequiredMark /></legend>
           <div className="grid grid-cols-2 gap-3">
             {PAYMENT_OPTIONS.map((opt) => (
               <ChoicePill key={opt.value} name="payment_type" value={opt.value} checked={payment === opt.value} onChange={setPayment}>
@@ -222,7 +240,7 @@ export default function YearEndPartyForm() {
         </fieldset>
 
         <div>
-          <label htmlFor="yep-receipt" className={labelClass}>Payment Receipt</label>
+          <label htmlFor="yep-receipt" className={labelClass}>Payment Receipt <RequiredMark /></label>
           <label
             htmlFor="yep-receipt"
             className={`flex cursor-pointer items-center gap-4 rounded-xl border-2 border-dashed px-4 py-5 transition ${
@@ -253,7 +271,7 @@ export default function YearEndPartyForm() {
         </div>
 
         <fieldset>
-          <legend className={labelClass}>Food Preference</legend>
+          <legend className={labelClass}>Food Preference <RequiredMark /></legend>
           <div className="grid grid-cols-3 gap-3">
             {FOOD_OPTIONS.map((opt) => (
               <ChoicePill key={opt} name="food_preference" value={opt} checked={food === opt} onChange={setFood}>

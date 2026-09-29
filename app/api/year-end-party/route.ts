@@ -65,7 +65,7 @@ export async function POST(request: Request) {
   const [firstName, ...rest] = name.split(/\s+/);
 
   const payload = {
-    event: "2nd Annual ES Team Building",
+    event: "2nd Annual ES Team Year End Getaway",
     event_dates: "Dec. 12-14, 2026",
     full_name: name,
     first_name: firstName,

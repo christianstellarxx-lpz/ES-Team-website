@@ -58,7 +58,7 @@ const AMENITIES = [
   {
     Icon: FiMic,
     title: "Event Spaces",
-    description: "An air-conditioned function hall with sound system and projector for our team-building program.",
+    description: "An air-conditioned function hall with sound system and projector for our year end program.",
   },
 ];
 
@@ -130,7 +130,7 @@ export default function YearEndPartyContent() {
                 className="inline-flex items-center gap-2 border border-brand-blue/40 bg-brand-blue/10 text-brand-blue text-sm font-body font-medium px-4 py-1.5 rounded-full mb-5"
               >
                 <span className="w-1.5 h-1.5 rounded-full bg-brand-blue animate-pulse" />
-                2nd Annual Year End Party
+                2nd Annual · Dec. 12–14, 2026
               </motion.div>
 
               <motion.h1
@@ -140,9 +140,9 @@ export default function YearEndPartyContent() {
                 className="font-heading font-extrabold text-white leading-tight mb-5"
                 style={{ fontSize: "clamp(2.1rem, 5.5vw, 3.5rem)" }}
               >
-                2nd Annual{" "}
+                The ES Team{" "}
                 <span className="bg-gradient-to-r from-brand-blue to-brand-aqua bg-clip-text text-transparent">
-                  ES Team Building
+                  Year End Getaway
                 </span>
               </motion.h1>
 
@@ -286,6 +286,71 @@ export default function YearEndPartyContent() {
               View the park on Facebook
               <FiExternalLink size={14} />
             </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── Year end shirt ── */}
+      <section className="relative overflow-hidden bg-brand-dark py-16 md:py-24">
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{
+            backgroundImage: [
+              "linear-gradient(rgba(54,212,255,0.6) 1px, transparent 1px)",
+              "linear-gradient(90deg, rgba(54,212,255,0.6) 1px, transparent 1px)",
+            ].join(", "),
+            backgroundSize: "60px 60px",
+            opacity: 0.04,
+          }}
+        />
+        <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 lg:gap-16 items-center">
+            <motion.div
+              initial={{ opacity: 0, x: -24 }}
+              whileInView={{ opacity: 1, x: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.6, ease: "easeOut" }}
+              className="text-center lg:text-left"
+            >
+              <span className="font-heading font-bold text-brand-blue text-xs tracking-widest uppercase mb-3 block">
+                Sneak Peek
+              </span>
+              <h2
+                className="font-heading font-extrabold text-white leading-tight mb-4"
+                style={{ fontSize: "clamp(1.5rem, 3.5vw, 2.25rem)" }}
+              >
+                The Year End Shirt
+              </h2>
+              <p className="font-body text-gray-400 text-base leading-relaxed max-w-md mx-auto lg:mx-0">
+                A first look at this year&apos;s ES Team polo: classic black with our logo on the chest.
+              </p>
+            </motion.div>
+
+            <motion.div
+              initial={{ opacity: 0, y: 30, scale: 0.96 }}
+              whileInView={{ opacity: 1, y: 0, scale: 1 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.7, ease: "easeOut" }}
+              className="relative mx-auto w-full max-w-md"
+            >
+              {/* Light glow so the black shirt reads against the dark background */}
+              <div
+                className="absolute inset-0 rounded-full"
+                style={{
+                  background:
+                    "radial-gradient(circle, rgba(255,255,255,0.9) 0%, rgba(137,246,239,0.45) 35%, rgba(54,212,255,0.12) 58%, transparent 72%)",
+                }}
+              />
+              <div className="relative aspect-square">
+                <Image
+                  src="/year-end-party/shirt.png"
+                  alt="Preview of the black ES Team year end polo shirt with the ES Team logo"
+                  fill
+                  sizes="(min-width: 1024px) 28rem, 100vw"
+                  className="object-contain drop-shadow-2xl"
+                />
+              </div>
+            </motion.div>
           </div>
         </div>
       </section>
