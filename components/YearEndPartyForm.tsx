@@ -73,6 +73,7 @@ export default function YearEndPartyForm() {
   const [errorMsg, setErrorMsg] = useState("");
   const [payment, setPayment] = useState("");
   const [food, setFood] = useState("");
+  const [poloShirt, setPoloShirt] = useState("");
   const [bringing, setBringing] = useState("");
   const [plusOnes, setPlusOnes] = useState("");
   const [fileName, setFileName] = useState("");
@@ -275,6 +276,17 @@ export default function YearEndPartyForm() {
           <div className="grid grid-cols-3 gap-3">
             {FOOD_OPTIONS.map((opt) => (
               <ChoicePill key={opt} name="food_preference" value={opt} checked={food === opt} onChange={setFood}>
+                {opt}
+              </ChoicePill>
+            ))}
+          </div>
+        </fieldset>
+
+        <fieldset>
+          <legend className={labelClass}>Interested to get polo shirt? <RequiredMark /></legend>
+          <div className="grid grid-cols-2 gap-3">
+            {["Yes", "No"].map((opt) => (
+              <ChoicePill key={opt} name="polo_shirt" value={opt} checked={poloShirt === opt} onChange={setPoloShirt}>
                 {opt}
               </ChoicePill>
             ))}

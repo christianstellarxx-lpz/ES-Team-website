@@ -14,6 +14,7 @@ import {
   FiHeart,
   FiMic,
   FiExternalLink,
+  FiDownload,
 } from "react-icons/fi";
 import Aurora from "./Aurora";
 import YearEndPartyForm from "./YearEndPartyForm";
@@ -21,6 +22,8 @@ import YearEndPartyForm from "./YearEndPartyForm";
 const VENUE_URL = "https://www.facebook.com/DavaoBambooSanctuaryandEcologicalPark";
 const VENUE_VIDEO_URL =
   "https://www.facebook.com/plugins/video.php?height=476&href=https%3A%2F%2Fwww.facebook.com%2Freel%2F1663939604287020%2F&show_text=false&width=267&t=0";
+
+const PAYMENT_QR = { src: "/year-end-party/payment-qr.jpg", fileName: "ES-Team-Year-End-Payment-QR.jpg" };
 
 const DETAILS = [
   { Icon: FiCalendar, label: "When", value: "Dec. 12–14, 2026" },
@@ -402,7 +405,7 @@ export default function YearEndPartyContent() {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, ease: "easeOut" }}
-              className="lg:col-span-2 lg:sticky lg:top-24"
+              className="lg:col-span-2"
             >
               <span className="font-heading font-bold text-brand-blue text-xs tracking-widest uppercase mb-3 block">
                 Registration
@@ -424,7 +427,7 @@ export default function YearEndPartyContent() {
                     <span className="font-semibold text-brand-dark">₱2,000 downpayment</span> or{" "}
                     <span className="font-semibold text-brand-dark">₱4,000 full payment</span> per person.
                     Bringing someone? The amount doubles for 1 pip and triples for 2. Attach a screenshot of
-                    your receipt.
+                    your receipt. Scan the QR code below to pay.
                   </p>
                 </li>
                 <li className="flex gap-3">
@@ -441,6 +444,35 @@ export default function YearEndPartyContent() {
                   </p>
                 </li>
               </ul>
+
+              {/* Payment QR */}
+              <div className="mt-8 rounded-3xl border border-gray-100 bg-gray-50 p-5 sm:p-6">
+                <p className="font-heading font-bold text-brand-dark text-base mb-1">Send your payment here</p>
+                <p className="font-body text-sm text-gray-500 mb-4">
+                  Scan with any InstaPay-enabled bank or e-wallet app (GoTyme · Jonathan Kim Sarong).
+                </p>
+                <div className="relative mx-auto aspect-[1290/1563] w-full max-w-[260px] overflow-hidden rounded-2xl shadow-md">
+                  <Image
+                    src={PAYMENT_QR.src}
+                    alt="GoTyme InstaPay QR code for Jonathan Kim Sarong"
+                    fill
+                    sizes="260px"
+                    className="object-cover"
+                  />
+                </div>
+                <a
+                  href={PAYMENT_QR.src}
+                  download={PAYMENT_QR.fileName}
+                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-full border border-brand-blue bg-white px-5 py-3 font-heading text-sm font-bold text-brand-dark transition hover:bg-brand-blue/10"
+                >
+                  <FiDownload size={16} className="text-brand-blue" />
+                  Save QR to Phone
+                </a>
+                <p className="mt-3 text-center font-body text-xs text-gray-400">
+                  On a PC? Take a screenshot of the QR code, or scan it straight from the screen with your phone.
+                  If the download only opens the image on your phone, long-press it and choose Save.
+                </p>
+              </div>
             </motion.div>
 
             <motion.div

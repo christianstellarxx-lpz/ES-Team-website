@@ -27,10 +27,11 @@ export async function POST(request: Request) {
   const paymentType = field(formData, "payment_type");
   const foodPreference = field(formData, "food_preference");
   const bringingSomeone = field(formData, "bringing_someone");
+  const poloShirt = field(formData, "polo_shirt");
   const plusOnes = bringingSomeone === "Yes" ? field(formData, "plus_ones") : "0";
   const receipt = formData.get("payment_receipt");
 
-  if (!name || !phone || !email || !paymentType || !foodPreference || !bringingSomeone) {
+  if (!name || !phone || !email || !paymentType || !foodPreference || !bringingSomeone || !poloShirt) {
     return Response.json({ error: "Please fill out all required fields." }, { status: 400 });
   }
   if (bringingSomeone === "Yes" && !["1", "2"].includes(plusOnes)) {
@@ -77,6 +78,7 @@ export async function POST(request: Request) {
     payment_summary: `${paymentType} - PHP ${paymentAmount.toLocaleString("en-PH")} for ${headcount} ${headcount === 1 ? "person" : "people"}`,
     payment_receipt_url: receiptUrl,
     food_preference: foodPreference,
+    polo_shirt: poloShirt,
     bringing_someone: bringingSomeone,
     plus_ones: plusOnes,
     headcount,
