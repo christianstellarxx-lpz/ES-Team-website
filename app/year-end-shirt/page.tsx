@@ -1,0 +1,39 @@
+import type { Metadata } from "next";
+import { connection } from "next/server";
+import CareersNavbar from "@/components/CareersNavbar";
+import YearEndShirtContent from "@/components/YearEndShirtContent";
+import Footer from "@/components/Footer";
+import { shirtOrdersClosed } from "@/lib/year-end-shirt";
+
+// Private page shared directly with the team (linked from /year-end-party only),
+// kept out of the site nav, sitemap, and search engines.
+export const metadata: Metadata = {
+  title: "ES Team Official Polo 2026",
+  description: "Order the official ES Team polo for the 2026 Year End Getaway. ₱500 per shirt, orders close Nov. 30, 2026.",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: { index: false, follow: false },
+  },
+  openGraph: {
+    title: "ES Team Official Polo 2026",
+    description: "Wear it with pride. Order your official ES Team polo for the year-end party.",
+    images: [{ url: "/year-end-party/shirt.png", alt: "The black ES Team official polo shirt" }],
+  },
+};
+
+export default async function YearEndShirtPage() {
+  // Render per request so the form switches to "Orders are now closed" right at the deadline.
+  await connection();
+  const closed = shirtOrdersClosed();
+
+  return (
+    <>
+      <CareersNavbar />
+      <main>
+        <YearEndShirtContent closed={closed} />
+      </main>
+      <Footer />
+    </>
+  );
+}

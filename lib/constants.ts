@@ -162,3 +162,7 @@ export const TESTIMONIALS: Testimonial[] = [
 // GoHighLevel inbound webhook for Year End Party registrations (called server-side only).
 export const YEAR_END_PARTY_WEBHOOK_URL =
   "https://services.leadconnectorhq.com/hooks/6vo3UaSIb7VBTiLfGyWx/webhook-trigger/0a7804e7-ef3c-4fc3-838c-a34a3f2b7aed";
+
+// GoHighLevel inbound webhook for Year End Shirt orders (called server-side only).
+export const YEAR_END_SHIRT_WEBHOOK_URL =
+  "https://services.leadconnectorhq.com/hooks/6vo3UaSIb7VBTiLfGyWx/webhook-trigger/fb54fe7a-9a88-4b9b-bf43-edc1607cbe96";

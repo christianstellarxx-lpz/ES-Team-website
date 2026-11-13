@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { motion, type Variants } from "framer-motion";
 import {
   FiCalendar,
@@ -80,7 +81,7 @@ const itemVariants: Variants = {
   visible: { opacity: 1, y: 0, transition: { duration: 0.55, ease: "easeOut" } },
 };
 
-function SectionHeading({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle?: string }) {
+export function SectionHeading({ eyebrow, title, subtitle }: { eyebrow: string; title: string; subtitle?: string }) {
   return (
     <motion.div
       initial={{ opacity: 0, y: 24 }}
@@ -100,6 +101,39 @@ function SectionHeading({ eyebrow, title, subtitle }: { eyebrow: string; title: 
       </h2>
       {subtitle && <p className="font-body text-gray-500 text-base max-w-xl mx-auto">{subtitle}</p>}
     </motion.div>
+  );
+}
+
+// Shared with the Year End Shirt page (same payee).
+export function PaymentQrCard() {
+  return (
+    <div className="rounded-3xl border border-gray-100 bg-gray-50 p-5 sm:p-6">
+      <p className="font-heading font-bold text-brand-dark text-base mb-1">Send your payment here</p>
+      <p className="font-body text-sm text-gray-500 mb-4">
+        Scan with any InstaPay-enabled bank or e-wallet app (GoTyme · Jonathan Kim Sarong).
+      </p>
+      <div className="relative mx-auto aspect-[1290/1563] w-full max-w-[260px] overflow-hidden rounded-2xl shadow-md">
+        <Image
+          src={PAYMENT_QR.src}
+          alt="GoTyme InstaPay QR code for Jonathan Kim Sarong"
+          fill
+          sizes="260px"
+          className="object-cover"
+        />
+      </div>
+      <a
+        href={PAYMENT_QR.src}
+        download={PAYMENT_QR.fileName}
+        className="mt-4 flex w-full items-center justify-center gap-2 rounded-full border border-brand-blue bg-white px-5 py-3 font-heading text-sm font-bold text-brand-dark transition hover:bg-brand-blue/10"
+      >
+        <FiDownload size={16} className="text-brand-blue" />
+        Save QR to Phone
+      </a>
+      <p className="mt-3 text-center font-body text-xs text-gray-400">
+        On a PC? Take a screenshot of the QR code, or scan it straight from the screen with your phone.
+        If the download only opens the image on your phone, long-press it and choose Save.
+      </p>
+    </div>
   );
 }
 
@@ -327,6 +361,13 @@ export default function YearEndPartyContent() {
               <p className="font-body text-gray-400 text-base leading-relaxed max-w-md mx-auto lg:mx-0">
                 A first look at this year&apos;s ES Team polo: classic black with our logo on the chest.
               </p>
+              <Link
+                href="/year-end-shirt"
+                className="group mt-8 inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-brand-blue to-brand-aqua px-7 py-3.5 font-heading text-sm font-bold text-brand-dark shadow-lg shadow-brand-blue/25 transition-all duration-300 hover:shadow-xl hover:shadow-brand-blue/40 hover:-translate-y-0.5"
+              >
+                Order Your Polo
+                <span aria-hidden className="transition-transform duration-300 group-hover:translate-x-1">→</span>
+              </Link>
             </motion.div>
 
             <motion.div
@@ -445,33 +486,8 @@ export default function YearEndPartyContent() {
                 </li>
               </ul>
 
-              {/* Payment QR */}
-              <div className="mt-8 rounded-3xl border border-gray-100 bg-gray-50 p-5 sm:p-6">
-                <p className="font-heading font-bold text-brand-dark text-base mb-1">Send your payment here</p>
-                <p className="font-body text-sm text-gray-500 mb-4">
-                  Scan with any InstaPay-enabled bank or e-wallet app (GoTyme · Jonathan Kim Sarong).
-                </p>
-                <div className="relative mx-auto aspect-[1290/1563] w-full max-w-[260px] overflow-hidden rounded-2xl shadow-md">
-                  <Image
-                    src={PAYMENT_QR.src}
-                    alt="GoTyme InstaPay QR code for Jonathan Kim Sarong"
-                    fill
-                    sizes="260px"
-                    className="object-cover"
-                  />
-                </div>
-                <a
-                  href={PAYMENT_QR.src}
-                  download={PAYMENT_QR.fileName}
-                  className="mt-4 flex w-full items-center justify-center gap-2 rounded-full border border-brand-blue bg-white px-5 py-3 font-heading text-sm font-bold text-brand-dark transition hover:bg-brand-blue/10"
-                >
-                  <FiDownload size={16} className="text-brand-blue" />
-                  Save QR to Phone
-                </a>
-                <p className="mt-3 text-center font-body text-xs text-gray-400">
-                  On a PC? Take a screenshot of the QR code, or scan it straight from the screen with your phone.
-                  If the download only opens the image on your phone, long-press it and choose Save.
-                </p>
+              <div className="mt-8">
+                <PaymentQrCard />
               </div>
             </motion.div>
 

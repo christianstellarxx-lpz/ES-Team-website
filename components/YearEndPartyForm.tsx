@@ -20,12 +20,12 @@ const FOOD_OPTIONS = ["Any", "Non-pork", "Non-seafood"];
 
 type Status = "idle" | "submitting" | "success" | "error";
 
-const inputClass =
+export const inputClass =
   "w-full rounded-xl border border-gray-200 bg-white px-4 py-3 font-body text-sm text-brand-dark placeholder:text-gray-400 outline-none transition focus:border-brand-blue focus:ring-4 focus:ring-brand-blue/15";
 
-const labelClass = "block font-heading font-semibold text-brand-dark text-sm mb-2";
+export const labelClass = "block font-heading font-semibold text-brand-dark text-sm mb-2";
 
-function RequiredMark() {
+export function RequiredMark() {
   return (
     <span aria-hidden className="text-red-500">
       *
@@ -33,7 +33,7 @@ function RequiredMark() {
   );
 }
 
-function ChoicePill({
+export function ChoicePill({
   name,
   value,
   checked,
