@@ -141,7 +141,7 @@ export default function YearEndShirtForm() {
         <p className="font-body text-gray-500 text-sm leading-relaxed max-w-md mx-auto">
           We have received your details and your receipt. A confirmation email is on its way to{" "}
           <span className="font-semibold text-brand-dark">{submitted.email}</span>. We will verify your payment. You
-          can collect your shirt at the year-end party, or contact Jonathan if you chose pickup at his place or a meetup. See you at the party!
+          can collect your shirt at the year-end party, or contact Jonathan if you chose pickup at his place, a meetup, or shipping. See you at the party!
         </p>
       </motion.div>
     );
@@ -358,7 +358,7 @@ export default function YearEndShirtForm() {
         {/* ── Getting the shirt ── */}
         <fieldset>
           <legend className={labelClass}>How will you get your shirt? <RequiredMark /></legend>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
             {PICKUP_OPTIONS.map((opt) => (
               <ChoicePill
                 key={opt}
@@ -375,7 +375,8 @@ export default function YearEndShirtForm() {
             ))}
           </div>
           <p className="mt-2 font-body text-xs text-gray-400">
-            Get your shirt at the year-end party, or contact Jonathan to pick it up at his place or meet up.
+            Get your shirt at the year-end party, or contact Jonathan to pick it up at his place, meet up, or have it
+            shipped.
           </p>
           {pickup && pickup !== PICKUP_OPTIONS[0] && (
             <p className="mt-2 rounded-xl bg-gray-50 px-4 py-3 font-body text-sm text-gray-600">

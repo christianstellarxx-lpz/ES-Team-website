@@ -9,7 +9,7 @@ import { shirtOrdersClosed } from "@/lib/year-end-shirt";
 // kept out of the site nav, sitemap, and search engines.
 export const metadata: Metadata = {
   title: "ES Team Official Polo 2026",
-  description: "Order the official ES Team polo for the 2026 Year End Getaway. ₱500 per shirt, orders close Nov. 30, 2026.",
+  description: "Order the official ES Team polo for the 2026 Year End Getaway. ₱500 per shirt, orders close Nov. 18, 2026.",
   robots: {
     index: false,
     follow: false,

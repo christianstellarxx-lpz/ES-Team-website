@@ -3,10 +3,10 @@
 
 export const SHIRT_PRICE = 500;
 export const SHIRT_MAX_QUANTITY = 10;
-export const SHIRT_ORDER_DEADLINE = new Date("2026-11-30T23:59:59+08:00");
+export const SHIRT_ORDER_DEADLINE = new Date("2026-11-18T23:59:59+08:00");
 export const shirtOrdersClosed = () => Date.now() > SHIRT_ORDER_DEADLINE.getTime();
-export const SHIRT_DEADLINE_LABEL = "Nov. 30, 2026, 11:59 PM (PH time)";
-export const SHIRT_DEADLINE_SHORT = "Nov. 30, 2026";
+export const SHIRT_DEADLINE_LABEL = "Nov. 18, 2026, 11:59 PM (PH time)";
+export const SHIRT_DEADLINE_SHORT = "Nov. 18, 2026";
 export const SHIRT_WEAR_DAY = "Day 3 of the Year End Getaway, Dec. 14, 2026";
 
 export const SHIRT_SIZES: Record<string, string[]> = {
@@ -19,6 +19,7 @@ export const PICKUP_OPTIONS = [
   "I will get it at the year-end party",
   "Pick up at Jonathan's place",
   "Meet up somewhere down the road",
+  "Ship it via LBC, J&T, etc.",
 ];
 
 export const SHIRT_MAX_FILE_BYTES = 5 * 1024 * 1024;

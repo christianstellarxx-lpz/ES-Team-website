@@ -46,7 +46,7 @@ const STEPS = [
     body: (
       <>
         You will receive a confirmation email once your order is recorded. You can get your shirt at the year-end
-        party, or contact Jonathan to pick it up at his place or meet up somewhere.
+        party, or contact Jonathan to pick it up at his place, meet up somewhere, or have it shipped.
       </>
     ),
   },
@@ -75,7 +75,8 @@ const FAQS = [
     a: (
       <>
         Jonathan will hand out the shirts at the year-end party. You can also pick it up at Jonathan&apos;s place or
-        meet up with him somewhere. Contact Jonathan at <JonathanLink /> to arrange it.
+        meet up with him somewhere, or have it shipped via LBC, J&amp;T, etc. Contact Jonathan at <JonathanLink /> to
+        arrange it.
       </>
     ),
   },
