@@ -2,14 +2,12 @@
 
 import Image from "next/image";
 import { motion, type Variants } from "framer-motion";
-import { FiShoppingBag, FiCalendar, FiCreditCard, FiClock, FiChevronDown, FiLock, FiMaximize2 } from "react-icons/fi";
+import { FiShoppingBag, FiCalendar, FiCreditCard, FiChevronDown, FiMaximize2 } from "react-icons/fi";
 import Aurora from "./Aurora";
 import YearEndShirtForm from "./YearEndShirtForm";
 import { PaymentQrCard, SectionHeading } from "./YearEndPartyContent";
 import {
   JONATHAN_EMAIL,
-  SHIRT_DEADLINE_LABEL,
-  SHIRT_DEADLINE_SHORT,
   SHIRT_WEAR_DAY,
   SIZE_CHART_SRC,
 } from "@/lib/year-end-shirt";
@@ -18,7 +16,6 @@ const DETAILS = [
   { Icon: FiShoppingBag, label: "What", value: "ES Team Official Polo Shirt" },
   { Icon: FiCalendar, label: "When to wear it", value: SHIRT_WEAR_DAY },
   { Icon: FiCreditCard, label: "Price", value: "₱500 per shirt" },
-  { Icon: FiClock, label: "Order deadline", value: SHIRT_DEADLINE_LABEL },
 ];
 
 const JonathanLink = () => (
@@ -57,8 +54,7 @@ const FAQS = [
     q: "Can I change my size after ordering?",
     a: (
       <>
-        Yes, until {SHIRT_DEADLINE_SHORT}. Email Jonathan at <JonathanLink /> with your full name and the new size.
-        After the deadline, orders are final.
+        Yes. Email Jonathan at <JonathanLink /> with your full name and the new size.
       </>
     ),
   },
@@ -130,7 +126,7 @@ const gridOverlay = {
   backgroundSize: "60px 60px",
 };
 
-export default function YearEndShirtContent({ closed }: { closed: boolean }) {
+export default function YearEndShirtContent() {
   return (
     <>
       {/* ── Hero ── */}
@@ -314,17 +310,6 @@ export default function YearEndShirtContent({ closed }: { closed: boolean }) {
           }}
         />
         <div className="relative z-10 max-w-7xl mx-auto px-4 md:px-8 lg:px-16">
-          {closed ? (
-            <div className="mx-auto max-w-xl rounded-3xl border border-gray-100 bg-gray-50 p-10 text-center">
-              <div className="mx-auto mb-5 flex h-16 w-16 items-center justify-center rounded-2xl bg-brand-blue/10">
-                <FiLock size={28} className="text-brand-blue" />
-              </div>
-              <h2 className="font-heading font-extrabold text-brand-dark text-2xl mb-3">Orders are now closed.</h2>
-              <p className="font-body text-gray-500 text-sm leading-relaxed">
-                Thank you to everyone who ordered! If you missed it, please contact Jonathan at <JonathanLink />.
-              </p>
-            </div>
-          ) : (
             <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 items-start">
               <motion.div
                 initial={{ opacity: 0, x: -24 }}
@@ -344,8 +329,7 @@ export default function YearEndShirtContent({ closed }: { closed: boolean }) {
                 </h2>
                 <p className="font-body text-gray-500 text-base leading-relaxed mb-8">
                   Pay <span className="font-semibold text-brand-dark">₱500 per shirt</span> using the QR code below,
-                  then fill out the form. Orders close on{" "}
-                  <span className="font-semibold text-brand-dark">{SHIRT_DEADLINE_LABEL}</span>.
+                  then fill out the form.
                 </p>
                 <PaymentQrCard />
               </motion.div>
@@ -360,7 +344,6 @@ export default function YearEndShirtContent({ closed }: { closed: boolean }) {
                 <YearEndShirtForm />
               </motion.div>
             </div>
-          )}
         </div>
       </section>
 

@@ -8,7 +8,6 @@ import {
   EMAIL_PATTERN,
   JONATHAN_EMAIL,
   PICKUP_OPTIONS,
-  SHIRT_DEADLINE_SHORT,
   SHIRT_MAX_FILE_BYTES,
   SHIRT_MAX_QUANTITY,
   SHIRT_PRICE,
@@ -166,8 +165,7 @@ export default function YearEndShirtForm() {
       <div className="grid grid-cols-1 gap-6">
         <p className="font-body text-sm text-gray-500">
           It takes about 2 minutes. Have your payment receipt ready to upload. All fields marked with{" "}
-          <span className="text-red-500">*</span> are required. Orders close on{" "}
-          <span className="font-semibold text-brand-dark">{SHIRT_DEADLINE_SHORT}</span>.
+          <span className="text-red-500">*</span> are required.
         </p>
 
         {/* ── About you ── */}
@@ -404,8 +402,7 @@ export default function YearEndShirtForm() {
               className="mt-0.5 h-5 w-5 flex-shrink-0 accent-brand-blue"
             />
             <span className="font-body text-sm text-gray-600">
-              I confirm my size and details are correct. I understand that orders cannot be changed after{" "}
-              {SHIRT_DEADLINE_SHORT}. <RequiredMark />
+              I confirm my size and details are correct. <RequiredMark />
             </span>
           </label>
           <FieldError id="yes-confirm-error" message={errors.confirm} />

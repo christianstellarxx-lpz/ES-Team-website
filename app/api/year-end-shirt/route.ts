@@ -8,7 +8,6 @@ import {
   SHIRT_PRICE,
   SHIRT_RECEIPT_TYPES,
   SHIRT_SIZES,
-  shirtOrdersClosed,
 } from "@/lib/year-end-shirt";
 
 // Same store as the party receipts, so the existing /api/year-end-party/receipt/[key] route serves these links too.
@@ -39,9 +38,6 @@ function parseShirts(raw: string): { fit: string; size: string }[] | null {
 // Receives a polo order, stores the payment receipt in Netlify Blobs,
 // then forwards the order (with a link to the receipt) to the GHL inbound webhook.
 export async function POST(request: Request) {
-  if (shirtOrdersClosed()) {
-    return Response.json({ error: "Orders are now closed." }, { status: 403 });
-  }
   if (!YEAR_END_SHIRT_WEBHOOK_URL) {
     console.error("[year-end-shirt] YEAR_END_SHIRT_WEBHOOK_URL is not set");
     return Response.json({ error: "Orders aren't open yet. Please try again later." }, { status: 503 });
