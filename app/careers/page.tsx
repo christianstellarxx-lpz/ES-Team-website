@@ -7,7 +7,7 @@ import { CAREERS_BOOKING_URL } from "@/lib/constants";
 
 export const metadata: Metadata = {
   title: "Careers | Join Our Virtual Assistant Team | ES Team",
-  description: "Are you a skilled virtual assistant ready to do meaningful remote work? Join ES Team — book an intro call, share your resume and portfolio, and meet our team.",
+  description: "Are you a Philippine-based virtual assistant ready to do meaningful remote work? Join ES Team (open to applicants in the Philippines only) — book an intro call, share your resume and portfolio, and meet our team.",
   keywords: [
     "virtual assistant jobs",
     "remote VA careers",
@@ -44,9 +44,9 @@ export default function CareersPage() {
       <CareersNavbar />
       <main>
         <PageHero
-          label="Join Our Team"
+          label="Now Hiring · Philippines Only"
           title="Build Your Career as a Virtual Assistant"
-          subtitle="We're looking for driven, detail-oriented remote professionals ready to make a real difference for growing businesses around the world."
+          subtitle="We're looking for driven, detail-oriented Philippine-based remote professionals ready to make a real difference for growing businesses around the world."
           image="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?auto=format&fit=crop&w=800&q=80"
           imageAlt="Team of remote professionals collaborating"
           ctaText="Book Your Intro Call"

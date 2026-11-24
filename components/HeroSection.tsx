@@ -248,7 +248,7 @@ export default function HeroSection() {
                     className="inline-flex items-center gap-2 border border-brand-blue/40 bg-brand-blue/10 text-brand-blue text-sm font-body font-medium px-4 py-1.5 rounded-full mb-6"
                   >
                     <span className="w-1.5 h-1.5 rounded-full bg-brand-blue animate-pulse" />
-                    Virtual Assistance &amp; Digital Marketing
+                    🇵🇭 Philippine-Based Virtual Assistants
                   </motion.div>
 
                   <motion.h1
@@ -272,7 +272,8 @@ export default function HeroSection() {
                     className="font-body text-gray-300 mb-8 max-w-xl"
                     style={{ fontSize: "1.125rem", lineHeight: "1.7" }}
                   >
-                    ES Team connects you with hand-picked virtual assistants who don&apos;t
+                    ES Team connects you with hand-picked virtual assistants based in the
+                    Philippines who don&apos;t
                     just do tasks — they drive results. Start with a free discovery call
                     and find your perfect match.
                   </motion.p>

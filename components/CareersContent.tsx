@@ -8,8 +8,8 @@ import CareersEmbed from "@/components/CareersEmbed";
 const PERKS = [
   {
     Icon: FiGlobe,
-    title: "Remote-First, Always",
-    description: "Work from anywhere in the world. We're built for remote professionals and believe great talent knows no borders.",
+    title: "Remote Work From Home in the Philippines",
+    description: "Work from home anywhere in the Philippines. We're built for Filipino remote professionals ready to serve clients worldwide.",
   },
   {
     Icon: FiTrendingUp,
@@ -106,8 +106,8 @@ export default function CareersContent() {
                 Why Join ES Team?
               </h2>
               <p className="font-body text-gray-500 text-base leading-relaxed mb-10">
-                We&apos;re a fast-growing virtual assistance agency connecting skilled remote professionals
-                with businesses that need them. If you&apos;re driven, detail-oriented, and ready to do
+                We&apos;re a fast-growing, Philippine-based virtual assistance agency connecting skilled
+                Filipino remote professionals with businesses that need them. If you&apos;re driven, detail-oriented, and ready to do
                 work that matters — you belong here.
               </p>
 
@@ -169,6 +169,17 @@ export default function CareersContent() {
               transition={{ duration: 0.7, ease: "easeOut", delay: 0.1 }}
               className="w-full scroll-mt-24"
             >
+              <div
+                role="note"
+                className="mb-5 flex gap-3 items-start bg-brand-blue/10 border border-brand-blue/40 rounded-2xl p-4"
+              >
+                <span aria-hidden="true" className="text-xl leading-none">🇵🇭</span>
+                <p className="font-body text-brand-dark text-sm leading-relaxed">
+                  <strong className="font-heading">Philippines-based applicants only.</strong>{" "}
+                  We currently hire virtual assistants who live and work in the Philippines.
+                  Applications from outside the Philippines will not be considered.
+                </p>
+              </div>
               <div className="mb-5">
                 <p className="font-heading font-bold text-brand-dark text-lg mb-1">Book Your Intro Call</p>
                 <p className="font-body text-gray-500 text-sm">
